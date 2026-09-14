@@ -1,0 +1,37 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="row justify-content-center my-5">
+  <div class="col-lg-7">
+    <div class="card border-0 rounded-4 shadow-lg overflow-hidden">
+      <div class="p-5 text-white text-center" style="background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);">
+        <div class="brand-icon-box mx-auto mb-3" style="width: 50px; height: 50px; font-size: 1.5rem;">
+          <i class="fa-solid fa-house-chimney-medical"></i>
+        </div>
+        <h2 class="display-6 fw-bold mb-2">Host your space on StayNest</h2>
+        <p class="lead opacity-90 mb-0">Join our trusted global host community and welcome travelers from around the world.</p>
+      </div>
+
+      <div class="card-body p-4 p-md-5">
+        <h5 class="fw-bold mb-3">Complete your Host Profile</h5>
+        <form action="/host/become-a-host" method="POST">
+          <div class="mb-3">
+            <label for="bio" class="form-label fw-semibold">About You as a Host</label>
+            <textarea name="bio" id="bio" rows="3" class="form-control rounded-3" placeholder="Tell guests what makes your stay unique and your hosting hospitality style..." required></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label for="phone" class="form-label fw-semibold">Host Contact Phone</label>
+            <input type="tel" name="phone" id="phone" class="form-control rounded-3" placeholder="+1 555-0199 or +91 98765 43210" required>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary py-3 rounded-pill fw-bold fs-5 shadow">
+              <i class="fa-solid fa-key me-2"></i> Activate Host Account
+            </button>
+            <a href="/listings" class="btn btn-link text-muted text-center mt-2">Maybe later</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

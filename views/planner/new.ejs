@@ -1,0 +1,114 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="row justify-content-center my-4">
+  <div class="col-lg-8">
+    <!-- Hero Banner -->
+    <div class="planner-hero">
+      <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-10 px-3 py-1 rounded-pill mb-3">
+        <i class="fa-solid fa-sparkles text-warning"></i>
+        <span class="small fw-bold">Next-Gen Travel AI</span>
+      </div>
+      <h1 class="display-6 fw-bold mb-2">StayNest AI Travel Planner</h1>
+      <p class="lead opacity-75 mb-0">
+        Enter your destination and travel style — our AI crafts a day-by-day itinerary and matches real StayNest verified stays.
+      </p>
+    </div>
+
+    <!-- Wizard Card -->
+    <div class="planner-card">
+      <form action="/planner/generate" method="POST" id="planner-form">
+        <!-- Step 1: Destination & Days -->
+        <div class="mb-4">
+          <label for="destination" class="form-label fw-bold">Where do you want to go?</label>
+          <div class="input-group">
+            <span class="input-group-text bg-transparent border-end-0"><i class="fa-solid fa-location-dot text-primary"></i></span>
+            <input type="text" name="destination" id="destination" class="form-control border-start-0 py-2" placeholder="e.g. Goa, Tokyo, Paris, Manali, Bali, Zermatt..." required>
+          </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label for="days" class="form-label fw-bold">Trip Duration (Days)</label>
+            <div class="input-group">
+              <span class="input-group-text bg-transparent border-end-0"><i class="fa-solid fa-calendar-days text-primary"></i></span>
+              <input type="number" name="days" id="days" class="form-control border-start-0 py-2" min="1" max="14" value="3" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="guests" class="form-label fw-bold">Number of Travelers</label>
+            <div class="input-group">
+              <span class="input-group-text bg-transparent border-end-0"><i class="fa-solid fa-user-group text-primary"></i></span>
+              <input type="number" name="guests" id="guests" class="form-control border-start-0 py-2" min="1" max="20" value="2" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Budget Tier -->
+        <div class="mb-4">
+          <label class="form-label fw-bold">Budget Preference</label>
+          <div class="row row-cols-3 g-3">
+            <div class="col">
+              <input type="radio" class="btn-check" name="budgetTier" id="budget-low" value="budget">
+              <label class="btn btn-outline-secondary w-100 p-3 rounded-4 text-center h-100" for="budget-low">
+                <div class="fs-4">🎒</div>
+                <div class="fw-bold mt-1">Backpacker</div>
+                <div class="small text-muted">Budget-friendly</div>
+              </label>
+            </div>
+            <div class="col">
+              <input type="radio" class="btn-check" name="budgetTier" id="budget-mid" value="moderate" checked>
+              <label class="btn btn-outline-secondary w-100 p-3 rounded-4 text-center h-100" for="budget-mid">
+                <div class="fs-4">✨</div>
+                <div class="fw-bold mt-1">Balanced</div>
+                <div class="small text-muted">Comfort & value</div>
+              </label>
+            </div>
+            <div class="col">
+              <input type="radio" class="btn-check" name="budgetTier" id="budget-high" value="luxury">
+              <label class="btn btn-outline-secondary w-100 p-3 rounded-4 text-center h-100" for="budget-high">
+                <div class="fs-4">👑</div>
+                <div class="fw-bold mt-1">Luxury</div>
+                <div class="small text-muted">Premium stays & dining</div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Interests & Vibes -->
+        <div class="mb-4">
+          <label class="form-label fw-bold">Travel Style & Interests (Pick any)</label>
+          <div class="d-flex flex-wrap gap-2" id="interests-chips">
+            <% const travelInterests = [
+              { label: '🏛️ History & Culture', val: 'Culture' },
+              { label: '🍕 Foodie & Dining', val: 'Food' },
+              { label: '🏖️ Beach & Relaxation', val: 'Beach' },
+              { label: '🧗 Adventure & Trekking', val: 'Adventure' },
+              { label: '🍸 Nightlife & Bars', val: 'Nightlife' },
+              { label: '🛍️ Shopping & Markets', val: 'Shopping' },
+              { label: '🌿 Nature & Wildlife', val: 'Nature' },
+              { label: '📸 Photography & Views', val: 'Sightseeing' },
+            ]; %>
+            <% for (let interest of travelInterests) { %>
+              <input type="checkbox" class="btn-check" name="interests" id="int-<%= interest.val %>" value="<%= interest.val %>" checked>
+              <label class="btn btn-outline-primary rounded-pill btn-sm px-3 py-2" for="int-<%= interest.val %>"><%= interest.label %></label>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold fs-5 shadow" id="btn-generate-plan">
+          <i class="fa-solid fa-wand-magic-sparkles text-warning me-2"></i> Generate Smart Itinerary
+        </button>
+      </form>
+
+      <!-- Dynamic Loading Screen during AI Generation -->
+      <div id="ai-loading-overlay" class="text-center py-5" style="display: none;">
+        <div class="spinner-grow text-primary mb-3" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
+        <h4 class="fw-bold" id="loading-quote">Consulting StayNest AI Engine...</h4>
+        <p class="text-muted">Analyzing local hotspots, crafting schedule, and matching verified StayNest properties.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/planner.js"></script>

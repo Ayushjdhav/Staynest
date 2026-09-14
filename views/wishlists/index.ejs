@@ -1,0 +1,61 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">My Saved Stays</h2>
+      <p class="text-muted">Properties you've saved to your wishlist.</p>
+    </div>
+    <span class="badge bg-primary rounded-pill px-3 py-2 fs-6">
+      <%= savedListings.length %> Saved
+    </span>
+  </div>
+
+  <% if (savedListings.length === 0) { %>
+    <div class="card p-5 text-center border-0 rounded-4 bg-subtle my-5">
+      <i class="fa-regular fa-heart text-muted mb-3" style="font-size: 3rem;"></i>
+      <h4 class="fw-bold">Your wishlist is empty</h4>
+      <p class="text-muted">As you search, tap the heart icon on any stay to save your favorite properties here.</p>
+      <a href="/listings" class="btn btn-primary rounded-pill px-4 mx-auto mt-2">Start Exploring</a>
+    </div>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <% for (let listing of savedListings) { %>
+        <div class="col" id="wishlist-item-<%= listing._id %>">
+          <div class="listing-card">
+            <!-- Card Image -->
+            <div class="card-img-wrapper">
+              <a href="/listings/<%= listing._id %>">
+                <img src="<%= listing.displayImage %>" loading="lazy" data-image-fallback="/images/listing-placeholder.svg" alt="<%= listing.title %>">
+              </a>
+              <!-- Active Wishlist Heart Button -->
+              <button class="btn-wishlist active" data-id="<%= listing._id %>" aria-label="Remove from Wishlist">
+                <i class="fa-solid fa-heart text-danger"></i>
+              </button>
+            </div>
+
+            <!-- Card Body -->
+            <a href="/listings/<%= listing._id %>">
+              <div class="d-flex justify-content-between align-items-start mt-2">
+                <div class="listing-title" title="<%= listing.title %>"><%= listing.title %></div>
+                <div class="small fw-bold d-flex align-items-center gap-1">
+                  <i class="fa-solid fa-star text-warning" style="font-size: 0.8rem;"></i>
+                  <span><%= listing.avgRating > 0 ? listing.avgRating.toFixed(1) : 'New' %></span>
+                </div>
+              </div>
+
+              <div class="listing-subtitle">
+                <%= listing.location %>, <%= listing.country %>
+              </div>
+
+              <div class="listing-price-tag">
+                <strong>₹ <%= listing.price.toLocaleString("en-IN") %></strong>
+                <span class="text-muted small"> / night</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>

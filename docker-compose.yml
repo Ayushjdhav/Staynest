@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: staynest_app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - ATLASDB_URL=${ATLASDB_URL:-mongodb://mongo:27017/staynest}
+      - SECRET=${SECRET:-staynestproductionsecretkey999}
+      - REDIS_URL=redis://redis:6379
+      - GEOAPIFY_API_KEY=${GEOAPIFY_API_KEY}
+      - CLOUD_NAME=${CLOUD_NAME}
+      - CLOUD_API_KEY=${CLOUD_API_KEY}
+      - CLOUD_API_SECRET=${CLOUD_API_SECRET}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    depends_on:
+      - redis
+      - mongo
+    networks:
+      - staynest_net
+
+  mongo:
+    image: mongo:7.0
+    container_name: staynest_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - staynest_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: staynest_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - staynest_net
+
+volumes:
+  mongo_data:
+  redis_data:
+
+networks:
+  staynest_net:
+    driver: bridge

@@ -1,0 +1,65 @@
+<!-- FLOATING STAYNEST AI ASSISTANT WIDGET -->
+<div id="staynest-ai-widget" class="ai-widget-container" aria-live="polite">
+  <!-- Trigger Button -->
+  <button id="ai-widget-toggle" class="ai-widget-toggle" aria-label="Open StayNest AI Concierge" title="Ask StayNest AI">
+    <div class="ai-toggle-pulse"></div>
+    <i class="fa-solid fa-wand-magic-sparkles ai-sparkle-icon"></i>
+    <span class="ai-toggle-label d-none d-sm-inline">Ask AI</span>
+  </button>
+
+  <!-- Chat Drawer / Modal -->
+  <div id="ai-chat-window" class="ai-chat-window shadow-lg" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="ai-chat-title">
+    <!-- Header -->
+    <div class="ai-chat-header">
+      <div class="d-flex align-items-center gap-2">
+        <div class="ai-avatar-circle">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+        <div>
+          <h6 class="mb-0 fw-bold" id="ai-chat-title">StayNest AI Concierge</h6>
+          <span class="ai-status-pill"><span class="ai-status-dot"></span> Grounded in live verified listings</span>
+        </div>
+      </div>
+      <div class="d-flex align-items-center gap-1">
+        <button id="ai-chat-clear" class="btn btn-sm text-muted" title="Clear conversation" aria-label="Clear chat">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <button id="ai-chat-close" class="btn btn-sm text-muted" title="Close chat" aria-label="Close chat">
+          <i class="fa-solid fa-xmark fs-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Suggestion Chips Bar -->
+    <div class="ai-suggestions-bar" id="ai-suggestions">
+      <button type="button" class="ai-chip" data-prompt="Show me luxury villas in Goa with a private pool">🏖️ Goa villa with pool</button>
+      <button type="button" class="ai-chip" data-prompt="Find verified stays in Himachal under ₹8,000">🏔️ Mountain stays < ₹8k</button>
+      <button type="button" class="ai-chip" data-prompt="What are the best stays for 4 guests?">👨‍👩‍👧 Stays for 4 guests</button>
+      <button type="button" class="ai-chip" data-prompt="What romantic places have amazing sunset views?">🌅 Scenic sunset stays</button>
+    </div>
+
+    <!-- Message Thread Container -->
+    <div class="ai-chat-body" id="ai-messages">
+      <!-- Welcome Message -->
+      <div class="ai-msg ai-msg-bot">
+        <div class="ai-bubble">
+          <p class="mb-1">Hello! I'm your <strong>StayNest AI Concierge</strong>.</p>
+          <p class="mb-0 text-muted small">I can help you find verified properties, check real-time amenities, compare prices, or answer questions strictly using our live database records.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Input Area -->
+    <form id="ai-chat-form" class="ai-chat-footer">
+      <div class="input-group">
+        <input type="text" id="ai-user-input" class="form-control ai-input" placeholder="Ask about destinations, prices, or amenities..." autocomplete="off" maxlength="280" required>
+        <button class="btn btn-primary ai-send-btn" type="submit" id="ai-send-btn" aria-label="Send message">
+          <i class="fa-solid fa-arrow-up"></i>
+        </button>
+      </div>
+      <div class="ai-disclaimer">
+        Responses are verified strictly against live database records. If not available, we state "Data not available."
+      </div>
+    </form>
+  </div>
+</div>

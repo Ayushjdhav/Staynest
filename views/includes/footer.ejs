@@ -1,17 +1,23 @@
-<footer>
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
-        </div>
-
-
-        <div class="f-info-brand"> &copy; Wanderlust Private Limited</div>
-        <div class="f-info-links">
-            <a href="/privacy"> Privacy</a>
-            <a href="/terms">Terms</a>
-        </div>
-
+<footer class="mt-auto py-4">
+  <div class="container text-center">
+    <div class="f-info-socials mb-3">
+      <i class="fa-brands fa-square-facebook" aria-label="Facebook"></i>
+      <i class="fa-brands fa-square-instagram" aria-label="Instagram"></i>
+      <i class="fa-brands fa-linkedin" aria-label="LinkedIn"></i>
+      <i class="fa-brands fa-x-twitter" aria-label="Twitter"></i>
     </div>
+    <div class="f-info-brand mb-1">
+      &copy; <%= new Date().getFullYear() %> StayNest Inc. All rights reserved.
+    </div>
+    <div class="f-info-tagline mb-3">
+      Find your next stay, with confidence.
+    </div>
+    <div class="f-info-links small text-muted">
+      <a href="/listings" class="text-decoration-none text-muted mx-2">Explore Stays</a> •
+      <a href="/planner" class="text-decoration-none text-muted mx-2">AI Itinerary Planner</a> •
+      <a href="/api-docs" class="text-decoration-none text-muted mx-2">REST API Docs</a> •
+      <a href="/host/become-a-host" class="text-decoration-none text-muted mx-2">Host with StayNest</a> •
+      <a href="/health" class="text-decoration-none text-muted mx-2">System Status</a>
+    </div>
+  </div>
 </footer>

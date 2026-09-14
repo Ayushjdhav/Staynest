@@ -1,0 +1,59 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="row justify-content-center my-4">
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h2 class="fw-bold mb-1">Notifications</h2>
+        <p class="text-muted">Stay up to date on your reservations, reviews, and host updates.</p>
+      </div>
+      <% if (notifications && notifications.length > 0) { %>
+        <form action="/notifications/read-all" method="POST">
+          <button type="submit" class="btn btn-outline-dark btn-sm rounded-pill">
+            <i class="fa-solid fa-check-double me-1"></i> Mark all read
+          </button>
+        </form>
+      <% } %>
+    </div>
+
+    <% if (!notifications || notifications.length === 0) { %>
+      <div class="card p-5 text-center border-0 rounded-4 bg-subtle my-4">
+        <i class="fa-regular fa-bell-slash text-muted mb-3" style="font-size: 3rem;"></i>
+        <h4 class="fw-bold">No notifications yet</h4>
+        <p class="text-muted">You're all caught up! Updates regarding your bookings and reviews will appear here.</p>
+      </div>
+    <% } else { %>
+      <div class="card border rounded-4 shadow-sm overflow-hidden">
+        <div class="list-group list-group-flush">
+          <% for (let notif of notifications) { %>
+            <div class="list-group-item p-3 d-flex justify-content-between align-items-start <%= notif.isRead ? '' : 'bg-light border-start border-4 border-primary' %>">
+              <div class="d-flex gap-3 align-items-start">
+                <div class="p-2 rounded-circle bg-primary bg-opacity-10 text-primary mt-1">
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1"><%= notif.title %></h6>
+                  <p class="mb-1 text-muted small"><%= notif.message %></p>
+                  <div class="d-flex gap-2 align-items-center">
+                    <span class="text-muted small" style="font-size: 0.75rem;"><%= new Date(notif.createdAt).toLocaleString() %></span>
+                    <% if (notif.link) { %>
+                      <span>•</span>
+                      <a href="<%= notif.link %>" class="small fw-bold text-primary text-decoration-none">View Details →</a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <% if (!notif.isRead) { %>
+                <form action="/notifications/<%= notif._id %>/read" method="POST">
+                  <button class="btn btn-link text-muted btn-sm p-0" title="Mark as Read">
+                    <i class="fa-solid fa-check"></i>
+                  </button>
+                </form>
+              <% } %>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>

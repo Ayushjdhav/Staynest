@@ -1,0 +1,214 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="container my-4">
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+    <div>
+      <div class="d-flex align-items-center gap-2 mb-1">
+        <h2 class="fw-bold mb-0">Host Dashboard</h2>
+        <span class="badge bg-primary rounded-pill px-3 py-1">StayNest Host</span>
+      </div>
+      <p class="text-muted mb-0">Track performance, manage stays, and review incoming guest reservations.</p>
+    </div>
+    <div class="d-flex gap-2">
+      <a href="/listings/new" class="btn btn-primary rounded-pill px-4 fw-bold">
+        <i class="fa-solid fa-plus me-1"></i> Create New Stay
+      </a>
+    </div>
+  </div>
+
+  <!-- KPI METRICS GRID -->
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 mb-5">
+    <div class="col">
+      <div class="card p-3 border rounded-4 shadow-sm bg-subtle d-flex flex-row align-items-center gap-3">
+        <div class="brand-icon-box" style="width: 44px; height: 44px; font-size: 1.25rem;">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+        <div>
+          <div class="text-muted small fw-semibold">Total Earnings</div>
+          <h4 class="fw-bold mb-0">₹ <%= totalEarnings.toLocaleString("en-IN") %></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card p-3 border rounded-4 shadow-sm bg-subtle d-flex flex-row align-items-center gap-3">
+        <div class="brand-icon-box" style="background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%); width: 44px; height: 44px; font-size: 1.25rem;">
+          <i class="fa-solid fa-house-chimney"></i>
+        </div>
+        <div>
+          <div class="text-muted small fw-semibold">Active Stays</div>
+          <h4 class="fw-bold mb-0"><%= activeListings %> / <%= totalListings %></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card p-3 border rounded-4 shadow-sm bg-subtle d-flex flex-row align-items-center gap-3">
+        <div class="brand-icon-box" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); width: 44px; height: 44px; font-size: 1.25rem;">
+          <i class="fa-solid fa-calendar-check"></i>
+        </div>
+        <div>
+          <div class="text-muted small fw-semibold">Reservations</div>
+          <h4 class="fw-bold mb-0"><%= totalReservations %></h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card p-3 border rounded-4 shadow-sm bg-subtle d-flex flex-row align-items-center gap-3">
+        <div class="brand-icon-box" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); width: 44px; height: 44px; font-size: 1.25rem;">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <div>
+          <div class="text-muted small fw-semibold">Average Rating</div>
+          <h4 class="fw-bold mb-0"><%= avgRating %> ★</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS: LISTINGS & RESERVATIONS -->
+  <ul class="nav nav-tabs border-bottom mb-4" id="hostTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active fw-bold text-dark" id="listings-tab" data-bs-toggle="tab" data-bs-target="#listings-panel" type="button" role="tab">
+        <i class="fa-solid fa-list me-1"></i> My Properties (<%= hostListings.length %>)
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link fw-bold text-dark" id="reservations-tab" data-bs-toggle="tab" data-bs-target="#reservations-panel" type="button" role="tab">
+        <i class="fa-solid fa-book-bookmark me-1"></i> Guest Reservations (<%= reservations.length %>)
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content" id="hostTabContent">
+    <!-- PANEL 1: LISTINGS -->
+    <div class="tab-pane fade show active" id="listings-panel" role="tabpanel">
+      <% if (hostListings.length === 0) { %>
+        <div class="card p-5 text-center border-0 rounded-4 bg-subtle">
+          <i class="fa-solid fa-house-chimney-crack text-muted fs-1 mb-3"></i>
+          <h5 class="fw-bold">No properties listed yet</h5>
+          <p class="text-muted">Start earning by listing your home, villa, or cabin on StayNest.</p>
+          <a href="/listings/new" class="btn btn-primary rounded-pill px-4 mx-auto mt-2 fw-bold">Publish First Stay</a>
+        </div>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Property</th>
+                <th>Category</th>
+                <th>Price / Night</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let listing of hostListings) { %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <img src="<%= listing.displayImage %>" class="rounded-3" style="width: 54px; height: 54px; object-fit: cover;" alt="<%= listing.title %>"
+                        onerror="this.src='https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=800&q=80'">
+                      <div>
+                        <a href="/listings/<%= listing._id %>" class="fw-bold text-dark text-decoration-none"><%= listing.title %></a>
+                        <div class="text-muted small"><i class="fa-solid fa-location-dot me-1"></i><%= listing.location %>, <%= listing.country %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge bg-light text-dark border text-capitalize"><%= listing.category %></span></td>
+                  <td class="fw-bold">₹ <%= listing.price.toLocaleString("en-IN") %></td>
+                  <td>
+                    <i class="fa-solid fa-star text-warning small"></i>
+                    <span class="fw-semibold"><%= listing.avgRating > 0 ? listing.avgRating.toFixed(1) : 'New' %></span>
+                    <span class="text-muted small">(<%= listing.reviewCount %>)</span>
+                  </td>
+                  <td>
+                    <form action="/host/listings/<%= listing._id %>/toggle" method="POST" class="d-inline">
+                      <button class="badge <%= listing.isActive ? 'bg-success' : 'bg-secondary' %> border-0 rounded-pill px-3 py-1 cursor-pointer">
+                        <%= listing.isActive ? 'Active' : 'Paused' %>
+                      </button>
+                    </form>
+                  </td>
+                  <td class="text-end">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-secondary btn-sm rounded-pill me-1" title="Edit">
+                      <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="d-inline" onsubmit="return confirm('Permanently delete this property?');">
+                      <button class="btn btn-outline-danger btn-sm rounded-pill" title="Delete">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- PANEL 2: RESERVATIONS -->
+    <div class="tab-pane fade" id="reservations-panel" role="tabpanel">
+      <% if (reservations.length === 0) { %>
+        <div class="card p-5 text-center border-0 rounded-4 bg-subtle">
+          <i class="fa-solid fa-calendar-xmark text-muted fs-1 mb-3"></i>
+          <h5 class="fw-bold">No reservations yet</h5>
+          <p class="text-muted">When travelers book your stays, their reservations and check-in details will appear here.</p>
+        </div>
+      <% } else { %>
+        <div class="table-responsive">
+          <table class="table table-hover align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Guest</th>
+                <th>Property</th>
+                <th>Dates</th>
+                <th>Nights</th>
+                <th>Total Earned</th>
+                <th>Status</th>
+                <th class="text-end">Receipt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for (let resv of reservations) { %>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <img src="<%= resv.guest && resv.guest.avatar ? resv.guest.avatar.url : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80' %>" class="rounded-circle" style="width: 36px; height: 36px; object-fit: cover;" alt="Guest"
+                        onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80'">
+                      <div>
+                        <div class="fw-bold"><%= resv.guest ? resv.guest.username : 'Guest' %></div>
+                        <div class="text-muted small"><%= resv.guest ? resv.guest.email : '' %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="fw-semibold"><%= resv.listing ? resv.listing.title : 'Deleted Stay' %></span>
+                  </td>
+                  <td>
+                    <div class="small fw-semibold"><%= new Date(resv.checkIn).toLocaleDateString() %> - <%= new Date(resv.checkOut).toLocaleDateString() %></div>
+                  </td>
+                  <td><%= resv.nights %> nights</td>
+                  <td class="fw-bold text-success">₹ <%= (resv.basePrice + resv.cleaningFee).toLocaleString("en-IN") %></td>
+                  <td>
+                    <span class="badge <%= resv.status === 'confirmed' ? 'bg-success' : resv.status === 'cancelled' ? 'bg-danger' : 'bg-warning text-dark' %> rounded-pill text-uppercase">
+                      <%= resv.status %>
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <a href="/bookings/<%= resv._id %>" class="btn btn-outline-primary btn-sm rounded-pill">
+                      View Details
+                    </a>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>

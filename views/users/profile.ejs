@@ -1,0 +1,42 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="row justify-content-center my-4">
+  <div class="col-lg-8">
+    <div class="card border rounded-4 shadow-sm overflow-hidden mb-4">
+      <div class="p-4 p-md-5 bg-subtle border-bottom">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+          <img src="<%= user.avatar && user.avatar.url ? user.avatar.url : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200' %>"
+            class="rounded-circle shadow-sm" style="width: 90px; height: 90px; object-fit: cover;" alt="Avatar"
+            onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=200'">
+          <div>
+            <h3 class="fw-bold mb-1"><%= user.username %></h3>
+            <div class="text-muted small mb-2"><%= user.email %></div>
+            <div class="d-flex gap-2">
+              <span class="badge bg-primary rounded-pill px-3 py-1 text-uppercase"><%= user.role %></span>
+              <span class="badge bg-light text-dark border rounded-pill px-3 py-1">Member since <%= new Date(user.createdAt || Date.now()).getFullYear() %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-4 p-md-5">
+        <h5 class="fw-bold mb-3">Profile Information</h5>
+        <form action="/profile" method="POST">
+          <div class="mb-3">
+            <label for="bio" class="form-label fw-semibold">About You (Bio)</label>
+            <textarea name="bio" id="bio" rows="3" class="form-control rounded-3" placeholder="Tell other travelers and hosts about your travel interests..."><%= user.bio || '' %></textarea>
+          </div>
+
+          <div class="mb-4">
+            <label for="phone" class="form-label fw-semibold">Phone Number</label>
+            <input type="tel" name="phone" id="phone" class="form-control rounded-3" value="<%= user.phone || '' %>" placeholder="+1 555-0199 or +91 98765 43210">
+          </div>
+
+          <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+            Save Profile Changes
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

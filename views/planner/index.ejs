@@ -1,0 +1,48 @@
+<% layout("/layouts/boilerplate.ejs") -%>
+
+<div class="container my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold mb-1">My AI Travel Plans</h2>
+      <p class="text-muted">Saved itineraries and personalized travel guides created by AI.</p>
+    </div>
+    <a href="/planner" class="btn btn-dark rounded-pill px-4">
+      <i class="fa-solid fa-plus me-1"></i> Plan New Trip
+    </a>
+  </div>
+
+  <% if (!itineraries || itineraries.length === 0) { %>
+    <div class="text-center py-5">
+      <i class="fa-solid fa-map-location-dot text-muted mb-3" style="font-size: 3rem;"></i>
+      <h4 class="fw-bold">No saved travel plans yet</h4>
+      <p class="text-muted">Generate a custom day-by-day travel itinerary with our AI Travel Planner in seconds.</p>
+      <a href="/planner" class="btn btn-danger rounded-pill px-4 mt-2">Generate My First Plan</a>
+    </div>
+  <% } else { %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% for (let trip of itineraries) { %>
+        <div class="col">
+          <div class="card h-100 border rounded-4 overflow-hidden shadow-sm">
+            <div class="p-4" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white;">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <span class="badge bg-danger rounded-pill"><%= trip.days %> Days</span>
+                <span class="small opacity-75"><%= new Date(trip.createdAt).toLocaleDateString() %></span>
+              </div>
+              <h5 class="fw-bold mb-1"><%= trip.destination %></h5>
+              <p class="small opacity-75 mb-0 text-truncate"><%= trip.title %></p>
+            </div>
+            <div class="card-body p-4 d-flex flex-direction-column justify-content-between">
+              <p class="card-text text-muted small mb-3"><%= trip.summary %></p>
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <span class="small text-muted"><%= trip.dailyPlans.length %> Days detailed</span>
+                <a href="/planner/<%= trip._id %>" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                  View Itinerary
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
